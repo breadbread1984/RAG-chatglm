@@ -2,7 +2,6 @@ tqdm
 absl-py
 torch
 transformers
-langchain
 langchain-community
 gradio
 unstructured
@@ -14,3 +13,4 @@ unstructured_inference
 layoutparser
 onnxruntime
 pikepdf
+sentence_transformers
