@@ -13,7 +13,7 @@ python3 -m pip install -r requirements.txt
 ## run service
 
 ```shell
-python3 main.py --doc_dir <path/to/directory/containing/pdfs> [--host 0.0.0.0] [--port 8880]
+python3 main.py --model (llama2|chatglm) --doc_dir <path/to/directory/containing/pdfs> [--host 0.0.0.0] [--port 8880]
 ```
 
 note that **--doc_dir** should provided when running for the first time.
