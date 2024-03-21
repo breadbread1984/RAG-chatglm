@@ -1,6 +1,6 @@
 # Introduction
 
-this project implements retrieval augmentation generation with ChatGLM3.
+this project implements retrieval augmentated generation with ChatGLM3.
 
 # Usage
 
