@@ -14,3 +14,4 @@ layoutparser
 onnxruntime
 pikepdf
 sentence-transformers
+chromadb
