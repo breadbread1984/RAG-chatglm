@@ -15,7 +15,7 @@ class RAG(object):
       db = docDatabase.load_doc(doc_dir)
     else:
       raise Exception('either db_dir or doc_dir is given')
-    self.chain = RetrievalQA.from_chain_type(llm, retriever = self.db.as_retriever(), return_source_documents = True, chain_type_kwargs = {"prompt": prompt})
+    self.chain = RetrievalQA.from_chain_type(llm, retriever = db.as_retriever(), return_source_documents = True, chain_type_kwargs = {"prompt": prompt})
   def query(self, question):
     return self.chain({'query': question})
 
