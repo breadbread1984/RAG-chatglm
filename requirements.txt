@@ -1,0 +1,7 @@
+tqdm
+absl-py
+torch
+transformers
+langchain
+langchain-community
+gradio
