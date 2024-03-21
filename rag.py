@@ -11,7 +11,7 @@ class RAG(object):
     llm = ChatGLM3(device = device)
     if db_dir is not None:
       db = DocDatabase.load_db(db_dir)
-    elif db_dir is not None:
+    elif doc_dir is not None:
       db = docDatabase.load_doc(doc_dir)
     else:
       raise Exception('either db_dir or doc_dir is given')
