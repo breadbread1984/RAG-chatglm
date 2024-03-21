@@ -38,3 +38,4 @@ class DocDatabase(object):
         embedding = embeddings,
         persis_directory = db_dir)
     vectordb.persist()
+    return vectordb
