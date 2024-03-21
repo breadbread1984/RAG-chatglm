@@ -23,7 +23,7 @@ class DocDatabase(object):
     docs = list()
     for f in tqdm(listdir(doc_dir)):
       stem, ext = splitext(f)
-      loader_types = {'.md': UnstructuredMarkdownL,
+      loader_types = {'.md': UnstructuredMarkdownLoader,
                       '.txt': UnstructuredFileLoader,
                       '.pdf': UnstructuredPDFLoader}
       loader = loader_types[ext](join(doc_dir, f), mode = "single", strategy = "fast")
