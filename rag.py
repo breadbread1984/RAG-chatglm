@@ -12,7 +12,7 @@ class RAG(object):
     if db_dir is not None:
       db = DocDatabase.load_db(db_dir)
     elif doc_dir is not None:
-      db = docDatabase.load_doc(doc_dir)
+      db = DocDatabase.load_doc(doc_dir)
     else:
       raise Exception('either db_dir or doc_dir is given')
     self.chain = RetrievalQA.from_chain_type(llm, retriever = db.as_retriever(), return_source_documents = True, chain_type_kwargs = {"prompt": prompt})
