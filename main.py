@@ -10,6 +10,8 @@ FLAGS = flags.FLAGS
 def add_options():
   flags.DEFINE_string('doc_dir', default = None, help = 'path to document directory')
   flags.DEFINE_enum('device', default = 'cuda', enum_values = {'cpu', 'cuda'}, help = 'device to use')
+  flags.DEFINE_string('host', default = '0.0.0.0', help = 'host address')
+  flags.DFEINE_integer('port', default = 7860, help = 'port number')
 
 class Warper(object):
   def __init__(self):
