@@ -16,7 +16,7 @@ def add_options():
 class Warper(object):
   def __init__(self):
     if FLAGS.doc_dir is not None:
-      self.rag = RAG(device = FLAGS.device, doc_dir = FLAGS.doc_dir)
+      self.rag = RAG(device = FLAGS.device, doc_dir = FLAGS.doc_dir, db_dir = 'vector_database')
     elif exists('vector_database'):
       self.rag = RAG(device = FLAGS.device, db_dir = 'vector_database')
     else:
