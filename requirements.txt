@@ -7,3 +7,4 @@ langchain-community
 gradio
 unstructured
 pdf2image
+pdfminer
