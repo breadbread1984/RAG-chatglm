@@ -13,7 +13,7 @@ class RAG(object):
       prompt = PromptTemplate.from_template("使用以下上下文来回答最后的问题。如果你不知道答案，就说你不知道，不要试图编造答案。尽量使答>案简明扼要。总是在回答的最后说“谢谢你的提问！”。\n{context}\n问题: {question}\n有用的回答:")
       llm = ChatGLM3(device = device)
     elif model == 'llama2':
-      prmopt = PromptTemplate.from_template("[INST] {context} {question} [/INST]")
+      prompt = PromptTemplate.from_template("[INST] {context} {question} [/INST]")
       llm = Llama2(device = device)
     else:
       raise Exception('unknown model!')
