@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
 from langchain.llms.base import LLM
 
 class ChatGLM3(LLM):
