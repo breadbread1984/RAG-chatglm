@@ -13,4 +13,4 @@ unstructured_inference
 layoutparser
 onnxruntime
 pikepdf
-sentence_transformers
+sentence-transformers
