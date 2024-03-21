@@ -2,6 +2,7 @@
 
 from os import listdir
 from os.path import splitext, join, exists
+from tqdm import tqdm
 from langchain,document_loaders import UnstructuredPDFLoader, UnstructuredFileLoader, UnstructuredMarkdownLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.huggingface import HuggingFaceEmbeddings
@@ -18,8 +19,9 @@ class DocDatabase(object):
   @staticmethod
   def load_doc(doc_dir, db_dir)
     # 1) load pages of documents to list docs
+    print('load pages of documents')
     docs = list()
-    for f in listdir(doc_dir):
+    for f in tqdm(listdir(doc_dir)):
       stem, ext = splitext(f)
       loader_types = {'.md': UnstructuredMarkdownL,
                       '.txt': UnstructuredFileLoader,
@@ -28,9 +30,11 @@ class DocDatabase(object):
       # load pages of a document to a list
       docs.extend(loader.load())
     # 2) split pages into chunks and save to split_docs
+    print('split pages into chunks')
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 150)
     split_docs = text_splitter.split_documents(docs)
     # 3) encode strings to feature vectors
+    print('encode strings to feature vectors')
     # NOTE: alternative model "distilbert/distilbert-base-uncased"
     embeddings = HuggingFaceEmbeddings(model_name = "autodl-tmp/sentence-transformer")
     vectordb = Chroma.from_documents(
