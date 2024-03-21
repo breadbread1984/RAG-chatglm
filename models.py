@@ -34,7 +34,7 @@ class ChatGLM3(LLM):
 
 class Llama2(LLM):
   tokenizer: AutoTokenizer = None
-  model: AutoModelforCausalLM = None
+  model: AutoModelForCausalLM = None
   def __init__(self, device = 'cuda'):
     assert device in {'cpu', 'cuda'}
     super().__init__()

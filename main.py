@@ -12,13 +12,14 @@ def add_options():
   flags.DEFINE_enum('device', default = 'cuda', enum_values = {'cpu', 'cuda'}, help = 'device to use')
   flags.DEFINE_string('host', default = '0.0.0.0', help = 'host address')
   flags.DEFINE_integer('port', default = 8880, help = 'port number')
+  flags.DEFINE_enum('model', default = 'chatglm', enum_values = {'chatglm', 'llama2'}, help = 'model to use')
 
 class Warper(object):
   def __init__(self):
     if FLAGS.doc_dir is not None:
-      self.rag = RAG(device = FLAGS.device, doc_dir = FLAGS.doc_dir, db_dir = 'vector_database')
+      self.rag = RAG(device = FLAGS.device, model = FLAGS.model, doc_dir = FLAGS.doc_dir, db_dir = 'vector_database')
     elif exists('vector_database'):
-      self.rag = RAG(device = FLAGS.device, db_dir = 'vector_database')
+      self.rag = RAG(device = FLAGS.device, model = FLAGS.model, db_dir = 'vector_database')
     else:
       raise Exception('vector database has not been initialized, please specify directory containing documents!')
   def query(self, question, history):
