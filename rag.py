@@ -13,9 +13,9 @@ class RAG(object):
     llm = ChatGLM3(device = device)
     if db_dir is not None and doc_dir is not None:
       if exists(db_dir): rmtree(db_dir)
-      db = DocDatabase.load_db(doc_dir, db_dir)
+      db = DocDatabase.load_doc(doc_dir, db_dir)
     elif db_dir is not None:
-      db = DocDatabase.load_doc(doc_dir)
+      db = DocDatabase.load_db(db_dir)
     else:
       raise Exception('at least db_dir should be given')
     self.chain = RetrievalQA.from_chain_type(llm, retriever = db.as_retriever(), return_source_documents = True, chain_type_kwargs = {"prompt": prompt})
