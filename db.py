@@ -14,7 +14,8 @@ class DocDatabase(object):
     pass
   @staticmethod
   def load_db(db_dir):
-    vectordb = Chroma(persist_directory = db_dir)
+    embeddings = HuggingFaceEmbeddings(model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+    vectordb = Chroma(embedding = embeddings, persist_directory = db_dir)
     return vectordb
   @staticmethod
   def load_doc(doc_dir, db_dir):
