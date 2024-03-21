@@ -22,7 +22,6 @@ class Warper(object):
     else:
       raise Exception('vector database has not been initialized, please specify directory containing documents!')
   def query(self, question, history):
-    history.append(question)
     try:
       answer = self.rag.query(question)
       history.append((question, answer['result']))
