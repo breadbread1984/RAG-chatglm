@@ -9,6 +9,7 @@ class ChatGLM3(LLM):
   tokenizer: AutoTokenizer = None
   model: AutoModelForCausalLM = None
   use_history: bool = None
+  history: List = None
   past_key_values: List = None
   def __init__(self, device = 'cuda', use_history = True):
     assert device in {'cpu', 'cuda'}
