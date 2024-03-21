@@ -40,6 +40,6 @@ class DocDatabase(object):
     vectordb = Chroma.from_documents(
         documents = split_docs,
         embedding = embeddings,
-        persis_directory = db_dir)
+        persist_directory = db_dir)
     vectordb.persist()
     return vectordb
