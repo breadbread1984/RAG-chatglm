@@ -13,3 +13,4 @@ opencv-python
 unstructured_inference
 layoutparser
 onnxruntime
+pikepdf
