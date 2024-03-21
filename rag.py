@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from lanchain.prompts import PromptTemplate
-from lanchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+from langchain.chains import RetrievalQA
 from models import ChatGLM3
 from db import DocDatabase
 
