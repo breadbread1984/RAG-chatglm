@@ -47,7 +47,7 @@ class Llama2(LLM):
     logits_processor = LogitsProcessorList()
     logits_processor.append(TemperatureLogitsWarper(0.8))
     logits_processor.append(TopPLogitsWarper(0.8))
-    inputs = self.tokenizer(prompt, return_tensors = 'pt', padding = True)
+    inputs = self.tokenizer(prompt, return_tensors = 'pt')
     outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True)
     input_ids = outputs.sequences
     outputs = tokenizer.batch_decode(input_ids, skip_special_tokens = True)
