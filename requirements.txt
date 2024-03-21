@@ -5,3 +5,4 @@ transformers
 langchain
 langchain-community
 gradio
+unstructured
