@@ -11,7 +11,6 @@ class ChatGLM3(LLM):
   model: AutoModelForCausalLM = None
   use_history: bool = None
   history: List = None
-  past_key_values: List = None
   def __init__(self, device = 'cuda', use_history = True):
     assert device in {'cpu', 'cuda'}
     super().__init__()
@@ -22,14 +21,12 @@ class ChatGLM3(LLM):
     self.model.eval()
     self.use_history = use_history
     self.history = list()
-    self.past_key_values = None
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
     if not self.use_history:
       self.history = list()
-    response, self.history, self.past_key_values = self.model.chat(self.tokenizer, prompt, history = self.history, past_key_values = self.past_key_values, use_cache = True, return_past_key_values = True)
+    response, self.history = self.model.chat(self.tokenizer, prompt, history = self.history, past_key_values = self.past_key_values, use_cache = True)
     if len(self.history) > 10:
       self.history.pop(0)
-      self.past_key_values = None
     return response
   @property
   def _llm_type(self):
