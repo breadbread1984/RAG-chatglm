@@ -2,6 +2,7 @@
 
 from typing import List
 import torch
+from huggingface_hub import login
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from langchain.llms.base import LLM
 
@@ -14,6 +15,7 @@ class ChatGLM3(LLM):
   def __init__(self, device = 'cuda', use_history = True):
     assert device in {'cpu', 'cuda'}
     super().__init__()
+    login(token = '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')
     self.tokenizer = AutoTokenizer.from_pretrained('THUDM/chatglm3-6b', trust_remote_code = True)
     self.model = AutoModelForCausalLM.from_pretrained('THUDM/chatglm3-6b', trust_remote_code = True)
     self.model = self.model.to(torch.device(device))
