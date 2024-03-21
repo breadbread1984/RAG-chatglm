@@ -24,7 +24,7 @@ class ChatGLM3(LLM):
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
     if not self.use_history:
       self.history = list()
-    response, self.history = self.model.chat(self.tokenizer, prompt, history = self.history, past_key_values = self.past_key_values, use_cache = True)
+    response, self.history = self.model.chat(self.tokenizer, prompt, history = self.history, use_cache = True)
     if len(self.history) > 10:
       self.history.pop(0)
     return response
