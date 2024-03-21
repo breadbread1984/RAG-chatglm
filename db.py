@@ -9,10 +9,14 @@ from langchain.vectorstores import Chroma
 from langchain_core.vectorstores import VectorStoreRetriever
 
 class DocDatabase(object):
-  vectordb : VectorStoreRetriever = None
-  def __init__(self, vec_dir = 'db'):
-    self.vec_dir = vec_dir
-  def load_doc(self, doc_dir)
+  def __init__(self):
+    pass
+  @staticmethod
+  def load_db(db_dir):
+    vectordb = Chroma(persist_directory = db_dir)
+    return vectordb
+  @staticmethod
+  def load_doc(doc_dir, db_dir)
     # 1) load pages of documents to list docs
     docs = list()
     for f in listdir(doc_dir):
@@ -32,5 +36,5 @@ class DocDatabase(object):
     vectordb = Chroma.from_documents(
         documents = split_docs,
         embedding = embeddings,
-        persis_directory = self.vec_dir)
+        persis_directory = db_dir)
     vectordb.persist()
