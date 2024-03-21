@@ -17,7 +17,7 @@ class DocDatabase(object):
     vectordb = Chroma(persist_directory = db_dir)
     return vectordb
   @staticmethod
-  def load_doc(doc_dir, db_dir)
+  def load_doc(doc_dir, db_dir):
     # 1) load pages of documents to list docs
     print('load pages of documents')
     docs = list()
