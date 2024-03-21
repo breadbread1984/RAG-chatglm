@@ -36,7 +36,7 @@ class DocDatabase(object):
     # 3) encode strings to feature vectors
     print('encode strings to feature vectors')
     # NOTE: alternative model "distilbert/distilbert-base-uncased"
-    embeddings = HuggingFaceEmbeddings(model_name = "autodl-tmp/sentence-transformer")
+    embeddings = HuggingFaceEmbeddings(model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
     vectordb = Chroma.from_documents(
         documents = split_docs,
         embedding = embeddings,
