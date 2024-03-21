@@ -10,3 +10,4 @@ pdf2image
 pdfminer
 pdfminer.six
 opencv-python
+unstructured_inference

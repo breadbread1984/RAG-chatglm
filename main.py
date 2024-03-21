@@ -42,7 +42,7 @@ def main(unused_argv):
         with gr.Row():
           clear_btn = gr.ClearButton(components = [chatbot], value = "清空问题")
   gr.close_all()
-  demo.launch()
+  demo.launch(server_name = FLAGS.host, server_port = FLAGS.port)
 
 if __name__ == "__main__":
   add_options()
