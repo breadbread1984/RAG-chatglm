@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 
+import torch
 from langchain.llms.base import LLM
 
 class ChatGLM3(LLM):
   tokenizer: AutoTokenizer = None
   model: AutoModelForCausalLM = None
-  def __init__(self, dev = 'cuda', use_history = True):
-    assert dev in {'cpu', 'cuda'}
+  def __init__(self, device = 'cuda', use_history = True):
+    assert device in {'cpu', 'cuda'}
     super().__init__()
     self.tokenizer = AutoTokenizer.from_pretrained('THUDM/chatglm3-6b', trust_remote_code = True)
     self.model = AutoModelForCausalLM.from_pretrained('THUDM/chatglm3-6b', trust_remote_code = True)
-    self.model = self.model.to(device(dev))
+    self.model = self.model.to(torch.device(device))
     self.model.eval()
     self.use_history = use_history
     self.history = list()
