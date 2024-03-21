@@ -11,3 +11,4 @@ pdfminer
 pdfminer.six
 opencv-python
 unstructured_inference
+layoutparser
