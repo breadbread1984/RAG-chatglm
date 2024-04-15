@@ -85,6 +85,7 @@ class ChemDFM(LLM):
     outputs = self.tokenizer.batch_decode(input_ids, skip_special_tokens = True)
     response = outputs[0][len(prompt):]
     self.history.append((prompt, response))
+    while len(self.history) > 16: self.history.pop(0)@s
     return response
   @property
   def _llm_type(self):
