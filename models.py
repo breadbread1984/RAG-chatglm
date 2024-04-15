@@ -77,7 +77,7 @@ class ChemDFM(LLM):
     s = ''
     for idx, (q, a) in enumerate(history[-16:]):
       s += '[Round %d]\nHuman: %s\nAssistant: %s\n' % (idx, q, a)
-    s += '[Round %d]\nHuman: %s\nAssistant:' % (len(history[-16:]), prompt)
+    s += '[Round %d]\nHuman: %s\nAssistant: ' % (len(history[-4:]), prompt)
     inputs = self.tokenizer(s, return_tensors = 'pt')
     inputs = inputs.to(torch.device(self.model.device))
     outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, max_new_tokens = 2048)
@@ -85,7 +85,7 @@ class ChemDFM(LLM):
     outputs = self.tokenizer.batch_decode(input_ids, skip_special_tokens = True)
     response = outputs[0][len(prompt):]
     self.history.append((prompt, response))
-    while len(self.history) > 16: self.history.pop(0)
+    while len(self.history) > 4: self.history.pop(0)
     return response
   @property
   def _llm_type(self):
