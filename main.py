@@ -12,7 +12,7 @@ def add_options():
   flags.DEFINE_enum('device', default = 'cuda', enum_values = {'cpu', 'cuda'}, help = 'device to use')
   flags.DEFINE_string('host', default = '0.0.0.0', help = 'host address')
   flags.DEFINE_integer('port', default = 8880, help = 'port number')
-  flags.DEFINE_enum('model', default = 'chatglm', enum_values = {'chatglm', 'llama2'}, help = 'model to use')
+  flags.DEFINE_enum('model', default = 'chatglm', enum_values = {'chatglm', 'llama2', 'chemdfm'}, help = 'model to use')
 
 class Warper(object):
   def __init__(self):
