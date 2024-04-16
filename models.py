@@ -60,7 +60,7 @@ class Llama2(LLM):
 
 class ChemDFM(LLM):
   tokenizer: AutoTokenizer = None
-  model: AutoModelforCausalLM = None
+  model: AutoModelForCausalLM = None
   def __init__(self, device = 'cuda'):
     assert device in {'cpu', 'cuda'}
     super().__init__()
