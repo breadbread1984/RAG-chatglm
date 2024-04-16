@@ -76,9 +76,9 @@ class ChemDFM(LLM):
     logits_processor.append(TemperatureLogitsWarper(0.9))
     logits_processor.append(TopPLogitsWarper(0.9))
     s = ''
-    for idx, (q, a) in enumerate(history[-16:]):
+    for idx, (q, a) in enumerate(self.history[-16:]):
       s += '[Round %d]\nHuman: %s\nAssistant: %s\n' % (idx, q, a)
-    s += '[Round %d]\nHuman: %s\nAssistant: ' % (len(history[-4:]), prompt)
+    s += '[Round %d]\nHuman: %s\nAssistant: ' % (len(self.history[-4:]), prompt)
     inputs = self.tokenizer(s, return_tensors = 'pt')
     inputs = inputs.to(torch.device(self.model.device))
     outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, max_new_tokens = 2048)
