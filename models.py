@@ -81,7 +81,7 @@ class ChemDFM(LLM):
     outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = False, use_cache = True, return_dict_in_generate = True, max_new_tokens = 2048)
     input_ids = outputs.sequences
     outputs = self.tokenizer.batch_decode(input_ids, skip_special_tokens = True)
-    response = outputs[0][len(prompt):]
+    response = outputs[0][len(s):]
     return response
   @property
   def _llm_type(self):
