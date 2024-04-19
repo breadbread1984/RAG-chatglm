@@ -58,6 +58,32 @@ class Llama2(LLM):
   def _llm_type(self):
     return "Llama-2-7b-chat-hf"
 
+class Llama3(LLM):
+  tokenizer: AutoTokenizer = None
+  model: AutoModelForCausalLM = None
+  def __init__(self, device = 'cuda'):
+    assert device in {'cpu', 'cuda'}
+    super().__init__()
+    login(token = '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')
+    self.tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B')
+    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B')
+    self.model = self.model.to(torch.device(device))
+    self.model.eval()
+  def _call(self, prompt, stop = None, run_manager = None, **kwargs):
+    logits_processor = LogitsProcessorList()
+    logits_processor.append(TemperatureLogitsWarper(0.8))
+    logits_processor.append(TopPLogitsWarper(0.8))
+    inputs = self.tokenizer(prompt, return_tensors = 'pt')
+    inputs = inputs.to(torch.device(self.model.device))
+    outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True)
+    input_ids = outputs.sequences
+    outputs = self.tokenizer.batch_decode(input_ids, skip_special_tokens = True)
+    response = outputs[0][len(prompt):]
+    return response
+  @property
+  def _llm_type(self):
+    return "Llama-3-8b-hf"
+
 class ChemDFM(LLM):
   tokenizer: AutoTokenizer = None
   model: AutoModelForCausalLM = None
