@@ -43,7 +43,6 @@ def main(unused_argv):
         msg = gr.Textbox(label = "需要问什么？")
         with gr.Row():
           submit_btn = gr.Button("发送")
-        with gr.Row():
           clear_btn = gr.ClearButton(components = [chatbot], value = "清空问题")
       submit_btn.click(warper.query, inputs = [msg, chatbot], outputs = [msg, chatbot])
   gr.close_all()
