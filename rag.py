@@ -4,7 +4,7 @@ from shutil import rmtree
 from os.path import exists
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-from models import ChatGLM3, Llama2, ChemDFM
+from models import ChatGLM3, Llama2, Llama3, ChemDFM
 from db import DocDatabase
 
 class RAG(object):
@@ -15,6 +15,9 @@ class RAG(object):
     elif model == 'llama2':
       prompt = PromptTemplate.from_template("Please answer the question at the end based on the following context. If you do not know the answer, just say you don't know and don't try to make up the answer. Try to keep your answers as concise as possible. Always end your answer by saying \"Thank you for asking!\". \n{context}\nquestion: {question}\nanswer:")
       llm = Llama2(device = device)
+    elif model == 'llama3':
+      prompt = PromptTemplate.from_template("Please answer the question at the end based on the following context. If you do not know the answer, just say you don't know and don't try to make up the answer. Try to keep your answers as concise as possible. Always end your answer by saying \"Thank you for asking!\". \n{context}\nquestion: {question}\nanswer:")
+      llm = Llama3(device = device)
     elif model == 'chemdfm':
       prompt = PromptTemplate.from_template("Please answer the question at the end based on the following context. If you do not know the answer, just say you don't know and don't try to make up the answer. Try to keep your answers as concise as possible. Always end your answer by saying \"Thank you for asking!\". \n{context}\nquestion: {question}\nanswer:")
       llm = ChemDFM(device = device)
