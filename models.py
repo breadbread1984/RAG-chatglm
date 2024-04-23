@@ -40,7 +40,7 @@ class Llama2(LLM):
     super().__init__()
     login(token = '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')
     self.tokenizer = AutoTokenizer.from_pretrained('meta-llama/Llama-2-7b-chat-hf')
-    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Llama-2-7b-chat-hf')
+    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Llama-2-7b-chat-hf', attn_implementation = 'flash_attention_2')
     self.model = self.model.to(torch.device(device))
     self.model.eval()
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
@@ -66,7 +66,7 @@ class Llama3(LLM):
     super().__init__()
     login(token = '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')
     self.tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B')
-    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B')
+    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B', attn_implementation = 'flash_attention_2')
     self.model = self.model.to(torch.device(device))
     self.model.eval()
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
