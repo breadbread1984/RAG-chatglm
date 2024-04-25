@@ -75,10 +75,10 @@ class Llama3(LLM):
     logits_processor.append(TopPLogitsWarper(0.9))
     inputs = self.tokenizer.apply_chat_template([{'role': 'user', 'content': prompt}], add_generation_prompt = True, return_tensors = "pt")
     inputs = inputs.to(torch.device(self.model.device))
-    outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, eos_token_id = [self.tokenizer.eos_token_id, self.tokenizer.convert_tokens_to_ids('<|eot_id|>')], max_new_tokens = 4096)
+    outputs = self.model.generate(inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, eos_token_id = [self.tokenizer.eos_token_id, self.tokenizer.convert_tokens_to_ids('<|eot_id|>')], max_new_tokens = 4096)
     input_ids = outputs.sequences
     outputs = self.tokenizer.batch_decode(input_ids, skip_special_tokens = True)
-    response = outputs[0][len(prompt):]
+    response = outputs[0][inputs.shape[-1]:]
     return response
   @property
   def _llm_type(self):
