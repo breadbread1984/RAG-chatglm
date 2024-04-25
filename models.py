@@ -40,7 +40,7 @@ class Llama2(LLM):
     super().__init__()
     login(token = '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')
     self.tokenizer = AutoTokenizer.from_pretrained('meta-llama/Llama-2-7b-chat-hf')
-    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Llama-2-7b-chat-hf')
+    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Llama-2-7b-chat-hf', attn_implementation = 'flash_attention_2')
     self.model = self.model.to(torch.device(device))
     self.model.eval()
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
@@ -66,7 +66,7 @@ class Llama3(LLM):
     super().__init__()
     login(token = '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')
     self.tokenizer = AutoTokenizer.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
-    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct')
+    self.model = AutoModelForCausalLM.from_pretrained('meta-llama/Meta-Llama-3-8B-Instruct', attn_implementation = 'flash_attention_2')
     self.model = self.model.to(torch.device(device))
     self.model.eval()
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
@@ -75,7 +75,7 @@ class Llama3(LLM):
     logits_processor.append(TopPLogitsWarper(0.9))
     inputs = self.tokenizer.apply_chat_template([{'role': 'user', 'content': prompt}], add_generation_prompt = True, return_tensors = "pt")
     inputs = inputs.to(torch.device(self.model.device))
-    outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, eos_token_id = [self.tokenizer.eos_token_id, self.tokenizer.convert_tokens_to_ids('<|eot_id|>')])
+    outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, eos_token_id = [self.tokenizer.eos_token_id, self.tokenizer.convert_tokens_to_ids('<|eot_id|>')], max_new_tokens = 4096)
     input_ids = outputs.sequences
     outputs = self.tokenizer.batch_decode(input_ids, skip_special_tokens = True)
     response = outputs[0][len(prompt):]

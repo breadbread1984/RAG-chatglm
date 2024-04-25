@@ -15,3 +15,4 @@ onnxruntime
 pikepdf
 sentence-transformers
 chromadb
+flash-attn
