@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from typing import List
+from copy import deepcopy
 import torch
 from huggingface_hub import login
 from transformers import AutoTokenizer, AutoModelForCausalLM, LogitsProcessorList, TemperatureLogitsWarper, TopPLogitsWarper, TopKLogitsWarper, RepetitionPenaltyLogitsProcessor
@@ -19,14 +20,39 @@ class ChatGLM3(LLM):
     self.model = AutoModelForCausalLM.from_pretrained('THUDM/chatglm3-6b', trust_remote_code = True)
     self.model = self.model.to(torch.device(device))
     self.model.eval()
-    self.use_history = use_history
-    self.history = list()
+  def process_response(self, output, history):
+    content = ""
+    history = deepcopy(history)
+    for response in output.split("<|assistant|>"):
+      if "\n" in response:
+        metadata, content = response.split("\n", maxsplit=1)
+      else:
+        metadata, content = "", response
+      if not metadata.strip():
+        content = content.strip()
+        history.append({"role": "assistant", "metadata": metadata, "content": content})
+        content = content.replace("[[训练时间]]", "2023年")
+      else:
+        history.append({"role": "assistant", "metadata": metadata, "content": content})
+        if history[0]["role"] == "system" and "tools" in history[0]:
+          content = "\n".join(content.split("\n")[1:-1])
+          def tool_call(**kwargs):
+            return kwargs
+          parameters = eval(content)
+          content = {"name": metadata.strip(), "parameters": parameters}
+        else:
+          content = {"name": metadata.strip(), "content": content}
+    return content, history
   def _call(self, prompt, stop = None, run_manager = None, **kwargs):
-    if not self.use_history:
-      self.history = list()
-    response, self.history = self.model.chat(self.tokenizer, prompt, history = self.history, use_cache = True)
-    if len(self.history) > 10:
-      self.history.pop(0)
+    logits_processor = LogitsProcessorList()
+    logits_processor.append(TemperatureLogitsWarper(0.8))
+    logits_processor.append(TopPLogitsWarper(0.8))
+    inputs = self.tokenizer(prompt, return_tensors = 'pt')
+    outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True)
+    outputs = outputs.tolist()[0][len(inputs['input_ids'][0]):-1]
+    response = self.tokenizer.decode(outputs)
+    history = list()
+    response, history = self.process_response(response, history)
     return response
   @property
   def _llm_type(self):
@@ -73,9 +99,9 @@ class Llama3(LLM):
     logits_processor = LogitsProcessorList()
     logits_processor.append(TemperatureLogitsWarper(0.6))
     logits_processor.append(TopPLogitsWarper(0.9))
-    inputs = self.tokenizer.apply_chat_template([{'role': 'user', 'content': prompt}], add_generation_prompt = True, return_tensors = "pt")
+    inputs = self.tokenizer(prompt, return_tensors = 'pt')
     inputs = inputs.to(torch.device(self.model.device))
-    outputs = self.model.generate(inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, eos_token_id = [self.tokenizer.eos_token_id, self.tokenizer.convert_tokens_to_ids('<|eot_id|>')], max_new_tokens = 4096)
+    outputs = self.model.generate(**inputs, logits_processor = logits_processor, do_sample = True, use_cache = True, return_dict_in_generate = True, eos_token_id = [self.tokenizer.eos_token_id, self.tokenizer.convert_tokens_to_ids('<|eot_id|>')], max_new_tokens = 4096)
     input_ids = outputs.sequences
     response = self.tokenizer.decode(input_ids[0][inputs.shape[-1]:], skip_special_tokens = True)
     return response
