@@ -10,8 +10,6 @@ from langchain.llms.base import LLM
 class ChatGLM3(LLM):
   tokenizer: AutoTokenizer = None
   model: AutoModelForCausalLM = None
-  use_history: bool = None
-  history: List = None
   def __init__(self, device = 'cuda', use_history = True):
     assert device in {'cpu', 'cuda'}
     super().__init__()
